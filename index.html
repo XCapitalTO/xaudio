@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-Audio | Extrator de Áudio Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=2">
+<!-- FontAwesome para ícones premium -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- SortableJS para drag-and-drop -->
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+
+<div class="app-layout">
+  <!-- SIDEBAR (Barra lateral UX Friendly) -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <img src="assets/img/x-audio.png" alt="X-Audio Logo" style="max-width: 100%; height: 64px; object-fit: contain;">
+    </div>
+    
+    <nav class="sidebar-nav">
+      <div class="nav-section">MENU PRINCIPAL</div>
+      <a href="#" class="nav-item active"><i class="fa-solid fa-bolt"></i> Conversor Rápido</a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-clock-rotate-left"></i> Histórico</a>
+      <a href="#" class="nav-item" onclick="toggleLibrary()"><i class="fa-solid fa-music"></i> Minha Biblioteca</a>
+      
+      <div class="nav-section" style="margin-top: 1.5rem;">FERRAMENTAS</div>
+      <a href="#" class="nav-item"><i class="fa-solid fa-sliders"></i> Configurações</a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-code"></i> API Developer</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="premium-card">
+        <i class="fa-solid fa-crown" style="color: #ffd666; font-size: 1.2rem; margin-bottom: 8px;"></i>
+        <div class="p-title">Desbloqueie o Pro</div>
+        <div class="p-desc">Downloads ilimitados a 320kbps.</div>
+        <button class="btn-upgrade">Fazer Upgrade</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT (Conteúdo Centralizado) -->
+  <main class="main-content">
+    <!-- TOP HEADER -->
+    <header class="top-header">
+      <div class="search-bar">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Buscar conversões anteriores...">
+      </div>
+      <div class="user-profile">
+        <div class="notif-bell">
+          <i class="fa-regular fa-bell"></i>
+          <span class="badge"></span>
+        </div>
+        <div class="avatar">
+          <img src="https://ui-avatars.com/api/?name=X Capital&background=39ff14&color=000" alt="User">
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+      
+      <!-- BACKGROUND GLOWS PARA DAR PROFUNDIDADE -->
+      <div class="bg-glow glow-1"></div>
+      <div class="bg-glow glow-2"></div>
+
+      <!-- LAYOUT WRAPPER: Divide entre Main e Ads -->
+      <div class="layout-wrapper">
+        <div class="main-column">
+          
+          <!-- HERO AREA -->
+          <div class="dashboard-hero">
+            <div class="hero-text">
+              <div class="badge-new">Novo Servidor Ultra-Rápido ⚡</div>
+              <h1>Extraia Áudio em<br><span class="text-gradient">Alta Fidelidade</span></h1>
+              <p>Converta vídeos do YouTube para MP3, WAV e FLAC instantaneamente, preservando a masterização original.</p>
+            </div>
+            
+            <!-- THE CONVERTER CARD (Módulo Principal) -->
+            <div class="converter-card glass-panel">
+              <div class="c-header">
+                <div class="icon-box"><i class="fa-solid fa-link"></i></div>
+                <div>
+                  <h3>Nova Conversão</h3>
+                  <span>Cole o link do vídeo abaixo</span>
+                </div>
+              </div>
+              
+              <div class="input-group focusable" id="url-group">
+                <i class="fa-brands fa-youtube icon-yt"></i>
+                <input type="url" id="url-input" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off">
+                <button class="btn-paste" onclick="pasteUrl()"><i class="fa-regular fa-clipboard"></i> Colar</button>
+              </div>
+
+              <div class="options-grid">
+                <div class="opt-col">
+                  <label>Formato de Saída</label>
+                  <div class="format-chips" id="format-row">
+                    <div class="f-chip active" data-fmt="mp3" onclick="selectFormat(this)">MP3</div>
+                    <div class="f-chip" data-fmt="wav" onclick="selectFormat(this)">WAV</div>
+                    <div class="f-chip" data-fmt="flac" onclick="selectFormat(this)">FLAC</div>
+                    <div class="f-chip" data-fmt="m4a" onclick="selectFormat(this)">M4A</div>
+                  </div>
+                </div>
+                
+                <div class="opt-col">
+                  <label>Qualidade de Áudio</label>
+                  <div class="custom-select-wrapper focusable">
+                    <select id="quality-select" class="custom-select">
+                      <option value="320">Studio (320 kbps)</option>
+                      <option value="256">Alta (256 kbps)</option>
+                      <option value="192" selected>Padrão (192 kbps)</option>
+                      <option value="128">Econômica (128 kbps)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="options-grid" style="margin-bottom: 1.2rem; border-top: 1px solid var(--border); padding-top: 1.2rem;">
+                <div class="opt-col">
+                  <label>Cortar Áudio (Opcional)</label>
+                  <div style="display: flex; gap: 10px;">
+                    <div class="input-group focusable" style="margin-bottom: 0; padding: 6px 10px;">
+                      <input type="text" id="trim-start" placeholder="00:00" style="font-size: 0.9rem; width: 60px; text-align: center;">
+                    </div>
+                    <span style="display: flex; align-items: center; color: var(--text-muted);">até</span>
+                    <div class="input-group focusable" style="margin-bottom: 0; padding: 6px 10px;">
+                      <input type="text" id="trim-end" placeholder="Fim" style="font-size: 0.9rem; width: 60px; text-align: center;">
+                    </div>
+                  </div>
+                </div>
+                <div class="opt-col">
+                  <label>Processamento</label>
+                  <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; text-transform: none; font-size: 0.95rem; font-weight: 500; color: var(--text-main); margin-top: 10px;">
+                    <input type="checkbox" id="normalize-audio" checked style="width: 18px; height: 18px; accent-color: var(--accent);">
+                    Normalizar Volume
+                  </label>
+                </div>
+              </div>
+
+              <button class="btn-primary" id="btn-download" onclick="startDownload()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Iniciar Extração Mágica</span>
+              </button>
+
+              <!-- PROGRESS -->
+              <div class="progress-wrap" id="progress-wrap">
+                <div class="p-info">
+                  <span id="progress-text">Analisando pacote...</span>
+                  <span id="progress-percent">0%</span>
+                </div>
+                <div class="p-bar-bg">
+                  <div class="p-bar-fill" id="progress-fill"></div>
+                </div>
+              </div>
+
+              <!-- RESULT -->
+              <div class="result-box" id="result-card">
+                <div class="r-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="r-details">
+                  <div class="r-title" id="result-title">Áudio Extraído com Sucesso!</div>
+                  <div class="r-meta" id="result-meta">MP3 · 192 kbps</div>
+                </div>
+                <button class="btn-success" id="btn-dl-final"><i class="fa-solid fa-download"></i> Salvar</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FEATURES ROW -->
+          <div class="features-row">
+            <div class="feature-box glass-panel">
+              <div class="fb-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+              <h4>Conversão Turbo</h4>
+              <p>Servidores dedicados de 10Gbps.</p>
+            </div>
+            <div class="feature-box glass-panel">
+              <div class="fb-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <h4>Privacidade Total</h4>
+              <p>Sem rastreamento, sem logs de IP.</p>
+            </div>
+            <div class="feature-box glass-panel">
+              <div class="fb-icon"><i class="fa-solid fa-headphones"></i></div>
+              <h4>Qualidade Original</h4>
+              <p>Preservação total de masterização.</p>
+            </div>
+          </div>
+
+        </div> <!-- END main-column -->
+
+        <!-- AD COLUMN -->
+        <div class="ad-column">
+          <div class="ad-carousel glass-panel" id="ad-carousel">
+            <div class="ad-slide active">
+              <i class="fa-solid fa-bullhorn" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px;"></i>
+              <h4 style="color: var(--text-main); margin-bottom: 10px;">Espaço Publicitário</h4>
+              <p style="font-size: 0.85rem;">Sua marca alcançando milhares de produtores musicais.</p>
+            </div>
+            <div class="ad-slide">
+              <i class="fa-solid fa-headphones" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px;"></i>
+              <h4 style="color: var(--text-main); margin-bottom: 10px;">Fone PRO 2026</h4>
+              <p style="font-size: 0.85rem;">Qualidade de estúdio pelo menor preço. Compre agora!</p>
+            </div>
+            <div class="ad-slide">
+              <i class="fa-solid fa-music" style="font-size: 2rem; color: var(--accent); margin-bottom: 15px;"></i>
+              <h4 style="color: var(--text-main); margin-bottom: 10px;">Plugin Bundle</h4>
+              <p style="font-size: 0.85rem;">Desconto exclusivo de 50% em VSTs profissionais.</p>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- END layout-wrapper -->
+      
+    </div>
+  </main>
+</div>
+
+<!-- OVERLAY e DRAWER da BIBLIOTECA -->
+<div class="library-overlay" id="lib-overlay" onclick="toggleLibrary()"></div>
+<div class="library-drawer" id="lib-drawer">
+  <div class="lib-header">
+    <div class="lib-title">
+      <i class="fa-solid fa-music"></i> 
+      <input type="text" id="playlist-name" value="Minha Playlist" class="editable-title">
+    </div>
+    <button class="btn-close-lib" onclick="toggleLibrary()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="lib-content">
+    <div class="lib-empty" id="lib-empty">Sua biblioteca está vazia.</div>
+    <ul class="song-list" id="song-list">
+      <!-- As músicas vão acumular aqui -->
+    </ul>
+  </div>
+  <div class="lib-footer">
+    <button class="btn-primary w-100" style="padding: 12px; font-size: 0.95rem;"><i class="fa-solid fa-download"></i> Baixar Playlist</button>
+  </div>
+</div>
+
+<script src="assets/js/script.js"></script>
+</body>
+</html>
